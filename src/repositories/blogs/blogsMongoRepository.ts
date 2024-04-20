@@ -6,7 +6,7 @@ import {mapToOutput} from "./blogsMongoQueryRepository";
 
 
 export const createBlog = async (req: Request) => {
-    const newBlog = {
+    const newBlog: BlogDbType = {
         name: req.body.name,
         description: req.body.description,
         websiteUrl: req.body.websiteUrl,
