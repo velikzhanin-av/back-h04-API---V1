@@ -4,16 +4,29 @@ import {PostDbType} from "../../db/dbTypes";
 import {db} from "../../db/db";
 import {Request} from "express";
 
-const mapToOutput = (post: any) => {  //проверить позже с типом
-    return {
-        id: post._id.toString(),
-        title: post.title,
-        shortDescription: post.shortDescription,
-        content: post.content,
-        blogId: post.blogId,
-        blogName: post.blogName,
-        createdAt: post.createdAt
+const mapToOutput = (post: PostDbType) => {  //проверить позже с типом
+    if (post._id) {
+        return {
+            id: post._id.toString(),
+            title: post.title,
+            shortDescription: post.shortDescription,
+            content: post.content,
+            blogId: post.blogId,
+            blogName: post.blogName,
+            createdAt: post.createdAt
+        }
+    } else {
+        return {
+            id: undefined,
+            title: post.title,
+            shortDescription: post.shortDescription,
+            content: post.content,
+            blogId: post.blogId,
+            blogName: post.blogName,
+            createdAt: post.createdAt
+        }
     }
+
 }
 
 export const findAllPosts = async () => {
