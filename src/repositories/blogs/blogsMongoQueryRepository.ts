@@ -54,12 +54,22 @@ const getTotalCount = async (filter: any) => {
 
 export const findPostsByBlogId = async (id: string, query: any) => {
     const params = helper(query)
-    let res: PostDbType[] = await postCollection
-        .find({blogId: id})
+    const filter = {blogId: id}
+    const totalCount: number = await getTotalCount(filter)
+    const posts: PostDbType[] = await postCollection
+        .find(filter)
         .skip(params.pageNumber)
         .limit(params.pageSize)
         .sort(params.sortBy, params.sortDirection).toArray()
-    return res.map((post: PostDbType) => {
-        return mapToOutputPosts(post)
-    })
+    console.log(posts)
+    //TODO возращается пустой items, нужно проверять
+    return {
+        pageCount: Math.ceil(totalCount / params.pageSize),
+        page: params.pageNumber,
+        pageSize: params.pageSize,
+        totalCount: totalCount,
+        items: posts.map((post: PostDbType) => {
+            return mapToOutputPosts(post)
+        })
+    }
 }

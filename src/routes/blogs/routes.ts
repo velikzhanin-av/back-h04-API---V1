@@ -31,5 +31,5 @@ blogsRouter.put('/:id', authMiddleware,
     updateBlogById)
 blogsRouter.delete('/:id', authMiddleware, deleteBlogById)
 blogsRouter.get('/:blogId/posts', getPostsByBlogId)
-blogsRouter.post('/:blogId/posts', authMiddleware, deleteBlogById)
+// blogsRouter.post('/:blogId/posts', authMiddleware, deleteBlogById)
 
