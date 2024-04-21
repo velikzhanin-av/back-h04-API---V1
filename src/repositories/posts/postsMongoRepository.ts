@@ -4,35 +4,22 @@ import {PostDbType} from "../../db/dbTypes";
 import {db} from "../../db/db";
 import {Request} from "express";
 
-const mapToOutput = (post: PostDbType) => {  //проверить позже с типом
-    if (post._id) {
-        return {
-            id: post._id.toString(),
-            title: post.title,
-            shortDescription: post.shortDescription,
-            content: post.content,
-            blogId: post.blogId,
-            blogName: post.blogName,
-            createdAt: post.createdAt
-        }
-    } else {
-        return {
-            id: undefined,
-            title: post.title,
-            shortDescription: post.shortDescription,
-            content: post.content,
-            blogId: post.blogId,
-            blogName: post.blogName,
-            createdAt: post.createdAt
-        }
+export const mapToOutputPosts = (post: any) => { // TODO не работает с типизацией!!!
+    return {
+        id: post._id?.toString(),
+        title: post.title,
+        shortDescription: post.shortDescription,
+        content: post.content,
+        blogId: post.blogId,
+        blogName: post.blogName,
+        createdAt: post.createdAt
     }
-
 }
 
 export const findAllPosts = async () => {
     let res = await postCollection.find().toArray()
     return res.map((post: PostDbType) => {
-        return mapToOutput(post)
+        return mapToOutputPosts(post)
     })
 }
 
@@ -48,13 +35,13 @@ export const createPost = async (req: Request) => {
         }
     let result = await postCollection.insertOne(newPost)
     console.log(newPost) // проверить позже
-    return mapToOutput(newPost)
+    return mapToOutputPosts(newPost)
 }
 
 export const findPostById = async (id: string) => {
     try {
         const post = await postCollection.findOne({_id: new ObjectId(id)})
-        return mapToOutput(post)
+        return mapToOutputPosts(post)
     } catch (err) {
         return false
     }

@@ -1,9 +1,9 @@
-import {blogCollection} from "../../db/mongoDb";
-import {BlogDbType} from "../../db/dbTypes";
+import {blogCollection, postCollection} from "../../db/mongoDb";
+import {BlogDbType, PostDbType} from "../../db/dbTypes";
 import {SortDirection} from "mongodb";
-import {Request} from "express";
+import {mapToOutputPosts} from "../posts/postsMongoRepository";
 
-export const mapToOutput = (blog: any) => {
+export const mapToOutputBlogs = (blog: any) => {
     return {
         id: blog._id.toString(),
         name: blog.name,
@@ -25,13 +25,41 @@ const helper = (query: any) => {
 }
 
 export const findAllBlogs = async (query: any) => {
-    const params = helper(query)
-    let res = await blogCollection
-        .find()
+    const params: any = helper(query)
+    const filter = {}
+    let blogs: BlogDbType[] = await getBlogsFromBD(params, filter)
+    const totalCount: number = await getTotalCount(filter)
+    return {
+        pageCount: Math.ceil(totalCount / params.pageSize),
+        page: params.pageNumber,
+        pageSize: params.pageSize,
+        totalCount: totalCount,
+        items: blogs.map((blog: BlogDbType) => {
+            return mapToOutputBlogs(blog)
+        })
+    }
+}
+
+const getBlogsFromBD = async (params: any, filter: any) => {
+    return await blogCollection
+        .find(filter)
         .skip(params.pageNumber)
         .limit(params.pageSize)
         .sort(params.sortBy, params.sortDirection).toArray()
-    return res.map((blog: BlogDbType) => {
-        return mapToOutput(blog)
+}
+
+const getTotalCount = async (filter: any) => {
+    return await blogCollection.countDocuments(filter)
+}
+
+export const findPostsByBlogId = async (id: string, query: any) => {
+    const params = helper(query)
+    let res: PostDbType[] = await postCollection
+        .find({blogId: id})
+        .skip(params.pageNumber)
+        .limit(params.pageSize)
+        .sort(params.sortBy, params.sortDirection).toArray()
+    return res.map((post: PostDbType) => {
+        return mapToOutputPosts(post)
     })
 }

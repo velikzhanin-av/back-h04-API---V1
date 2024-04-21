@@ -2,7 +2,7 @@ import {blogCollection} from "../../db/mongoDb";
 import {Request} from "express";
 import {ObjectId} from "mongodb";
 import {BlogDbType} from "../../db/dbTypes";
-import {mapToOutput} from "./blogsMongoQueryRepository";
+import {mapToOutputBlogs} from "./blogsMongoQueryRepository";
 
 
 export const createBlog = async (req: Request) => {
@@ -14,13 +14,13 @@ export const createBlog = async (req: Request) => {
         isMembership: false
     }
     let result = await blogCollection.insertOne(newBlog)
-    return mapToOutput(newBlog)
+    return mapToOutputBlogs(newBlog)
 }
 
 export const findBlogById = async (id: string) => {
     try {
         const blog = await blogCollection.findOne({_id: new ObjectId(id)})
-        return mapToOutput(blog)
+        return mapToOutputBlogs(blog)
     } catch (err) {
         return false
     }
