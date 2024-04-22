@@ -55,8 +55,10 @@ const getTotalCount = async (filter: any) => {
 export const findPostsByBlogId = async (id: string, query: any) => {
     const params = helper(query)
     const filter = {blogId: id}
-    console.log(id)
     const totalCount: number = await getTotalCount(filter)
+    if (!totalCount) {
+        return
+    }
     const posts: PostDbType[] = await postCollection
         .find(filter).toArray()
     return {
@@ -70,5 +72,4 @@ export const findPostsByBlogId = async (id: string, query: any) => {
     }
 }
 
-
-//sfgfdg
+//sdfdsdfdfdfgf
