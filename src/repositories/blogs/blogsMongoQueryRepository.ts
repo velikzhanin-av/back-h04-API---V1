@@ -14,7 +14,7 @@ export const mapToOutputBlogs = (blog: any) => {
     }
 }
 
-const helper = (query: any) => {
+export const helper = (query: any) => {
     return {
         pageNumber: query.pageNumber ? +query.pageNumber : 1,
         pageSize: query.pageSize !== undefined ? +query.pageSize : 10,
@@ -48,7 +48,7 @@ const getBlogsFromBD = async (params: any, filter: any) => {
         .sort(params.sortBy, params.sortDirection).toArray()
 }
 
-const getTotalCount = async (filter: any) => {
+export const getTotalCount = async (filter: any) => {
     return await postCollection.countDocuments(filter)
 }
 
@@ -81,4 +81,3 @@ export const findPostsByBlogId = async (id: string, query: any) => {
     }
 }
 
-//sdfdsdfdfdfgf
