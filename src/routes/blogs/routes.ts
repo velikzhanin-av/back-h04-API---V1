@@ -40,7 +40,6 @@ blogsRouter.delete('/:id', authMiddleware, deleteBlogById)
 blogsRouter.get('/:blogId/posts', getPostsByBlogId)
 blogsRouter.post('/:blogId/posts', authMiddleware,
     shortDescriptionValidation,
-    blogIdValidation,
     titleValidation,
     contentValidation,
     postsInputValidation,
