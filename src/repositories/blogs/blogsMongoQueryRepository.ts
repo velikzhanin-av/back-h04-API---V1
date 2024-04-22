@@ -26,7 +26,7 @@ const helper = (query: any) => {
 
 export const findAllBlogs = async (query: any) => {
     const params: any = helper(query)
-    const filter = {}
+    const filter = searchNameTerm(params.searchNameTerm)
     let blogs: BlogDbType[] = await getBlogsFromBD(params, filter)
     const totalCount: number = await getTotalCount(filter)
     return {
@@ -50,6 +50,15 @@ const getBlogsFromBD = async (params: any, filter: any) => {
 
 const getTotalCount = async (filter: any) => {
     return await postCollection.countDocuments(filter)
+}
+
+const searchNameTerm = (searchNameTerm: any) => {
+    const search = searchNameTerm
+        ? {name: {$regex: searchNameTerm, $options: 'i'}}
+        : {}
+    return {
+        ...search,
+    }
 }
 
 export const findPostsByBlogId = async (id: string, query: any) => {
