@@ -12,6 +12,7 @@ import {
 } from "../../middlewares/blogsInputValidation";
 import {authMiddleware} from "../../middlewares/authMiddleware";
 import {getPostsByBlogId} from "../../controllers/blogs/getPostByBlogId";
+import {postedPostsByBlogId} from "../../controllers/blogs/postedPostsByBlogId";
 
 export const blogsRouter = Router()
 
@@ -31,5 +32,5 @@ blogsRouter.put('/:id', authMiddleware,
     updateBlogById)
 blogsRouter.delete('/:id', authMiddleware, deleteBlogById)
 blogsRouter.get('/:blogId/posts', getPostsByBlogId)
-// blogsRouter.post('/:blogId/posts', authMiddleware, deleteBlogById)
+blogsRouter.post('/:blogId/posts', authMiddleware, postedPostsByBlogId)
 
