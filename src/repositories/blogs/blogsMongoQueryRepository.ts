@@ -54,14 +54,11 @@ const getTotalCount = async (filter: any) => {
 
 export const findPostsByBlogId = async (id: string, query: any) => {
     const params = helper(query)
-    const filter = {blogId: '66252f0df149885c94b2861c'}
+    const filter = {blogId: id}
     console.log(id)
     const totalCount: number = await getTotalCount(filter)
-    console.log(await postCollection.find().toArray())
     const posts: PostDbType[] = await postCollection
         .find(filter).toArray()
-    console.log(posts)
-    //TODO возращается пустой items, нужно проверятьsdsjsdfdsf
     return {
         pageCount: Math.ceil(totalCount / params.pageSize),
         page: params.pageNumber,
@@ -72,3 +69,6 @@ export const findPostsByBlogId = async (id: string, query: any) => {
         })
     }
 }
+
+
+//sfgfdg
