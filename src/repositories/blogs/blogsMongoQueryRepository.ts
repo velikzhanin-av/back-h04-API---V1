@@ -49,20 +49,19 @@ const getBlogsFromBD = async (params: any, filter: any) => {
 }
 
 const getTotalCount = async (filter: any) => {
-    return await blogCollection.countDocuments(filter)
+    return await postCollection.countDocuments(filter)
 }
 
 export const findPostsByBlogId = async (id: string, query: any) => {
     const params = helper(query)
-    const filter = {blogId: id}
+    const filter = {blogId: '66252f0df149885c94b2861c'}
+    console.log(id)
     const totalCount: number = await getTotalCount(filter)
+    console.log(await postCollection.find().toArray())
     const posts: PostDbType[] = await postCollection
-        .find(filter)
-        .skip(params.pageNumber)
-        .limit(params.pageSize)
-        .sort(params.sortBy, params.sortDirection).toArray()
+        .find(filter).toArray()
     console.log(posts)
-    //TODO возращается пустой items, нужно проверять
+    //TODO возращается пустой items, нужно проверятьsdsjsdfdsf
     return {
         pageCount: Math.ceil(totalCount / params.pageSize),
         page: params.pageNumber,

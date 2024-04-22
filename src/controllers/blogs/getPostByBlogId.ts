@@ -2,7 +2,7 @@ import {Request, Response} from "express"
 import {findPostsByBlogId} from "../../repositories/blogs/blogsMongoQueryRepository";
 
 export const getPostsByBlogId = async (req: Request, res: Response) => {
-    const posts = await findPostsByBlogId(req.params.id, req.query)
+    const posts = await findPostsByBlogId(req.params.blogId, req.query)
     if (!posts) {
         res
             .sendStatus(404)
