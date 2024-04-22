@@ -10,6 +10,6 @@ export const postedPostsByBlogId = async (req: Request, res: Response) => {
         return
     }
     res
-        .status(200)
+        .status(201)
         .json(posts)
 }
