@@ -49,7 +49,7 @@ const getBlogsFromBD = async (params: any, filter: any) => {
 }
 
 export const getTotalCount = async (filter: any) => {
-    return await postCollection.countDocuments(filter)
+    return await blogCollection.countDocuments(filter)
 }
 
 const searchNameTerm = (searchNameTerm: any) => {
