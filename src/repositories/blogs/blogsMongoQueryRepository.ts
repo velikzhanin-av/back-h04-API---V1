@@ -63,6 +63,7 @@ const searchNameTerm = (searchNameTerm: any) => {
 
 export const findPostsByBlogId = async (id: string, query: any) => {
     const params = helper(query)
+    console.log(params)
     const filter = {blogId: id}
     const totalCount: number = await getTotalCount(filter)
     if (!totalCount) {
