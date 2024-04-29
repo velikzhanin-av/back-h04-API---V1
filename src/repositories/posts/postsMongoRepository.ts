@@ -34,7 +34,7 @@ export const createPost = async (req: Request) => {
             createdAt: new Date().toISOString()
         }
     let result = await postCollection.insertOne(newPost)
-    console.log(newPost) // TODO проверить позже изменение переменной
+    // TODO проверить позже изменение переменной
     return mapToOutputPosts(newPost)
 }
 
