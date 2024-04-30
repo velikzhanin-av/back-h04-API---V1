@@ -52,6 +52,10 @@ export const getTotalCount = async (filter: any) => {
     return await blogCollection.countDocuments(filter)
 }
 
+const getTotalCountPosts = async (filter: any) => {
+    return await postCollection.countDocuments(filter)
+}
+
 const searchNameTerm = (searchNameTerm: any) => {
     const search = searchNameTerm
         ? {name: {$regex: searchNameTerm, $options: 'i'}}
@@ -63,9 +67,10 @@ const searchNameTerm = (searchNameTerm: any) => {
 
 export const findPostsByBlogId = async (id: string, query: any) => {
     const params = helper(query)
-    console.log(params)
+    console.log(id)
     const filter = {blogId: id}
-    const totalCount: number = await getTotalCount(filter)
+    const totalCount: number = await getTotalCountPosts(filter)
+    console.log(totalCount)
     if (!totalCount) {
         return
     }

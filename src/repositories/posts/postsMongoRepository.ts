@@ -35,6 +35,7 @@ export const createPost = async (req: Request) => {
         }
     let result = await postCollection.insertOne(newPost)
     // TODO проверить позже изменение переменной
+    console.log(result)
     return mapToOutputPosts(newPost)
 }
 

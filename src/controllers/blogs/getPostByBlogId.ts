@@ -3,6 +3,7 @@ import {findPostsByBlogId} from "../../repositories/blogs/blogsMongoQueryReposit
 
 export const getPostsByBlogId = async (req: Request, res: Response) => {
     const posts = await findPostsByBlogId(req.params.blogId, req.query)
+    console.log(posts)
     if (!posts) {
         res
             .sendStatus(404)
