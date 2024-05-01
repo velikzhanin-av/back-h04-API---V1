@@ -30,7 +30,7 @@ export const findAllBlogs = async (query: any) => {
     let blogs: BlogDbType[] = await getBlogsFromBD(params, filter)
     const totalCount: number = await getTotalCount(filter)
     return {
-        pageCount: Math.ceil(totalCount / params.pageSize),
+        pagesCount: Math.ceil(totalCount / params.pageSize),
         page: params.pageNumber,
         pageSize: params.pageSize,
         totalCount: totalCount,
@@ -53,11 +53,11 @@ export const getTotalCount = async (filter: any) => {
     return await blogCollection.countDocuments(filter)
 }
 
-const getTotalCountPosts = async (filter: any) => {
+export const getTotalCountPosts = async (filter: any) => {
     return await postCollection.countDocuments(filter)
 }
 
-const searchNameTerm = (searchNameTerm: any) => {
+export const searchNameTerm = (searchNameTerm: any) => {
     const search = searchNameTerm
         ? {name: {$regex: searchNameTerm, $options: 'i'}}
         : {}
@@ -75,12 +75,12 @@ export const findPostsByBlogId = async (id: string, query: any) => {
     }
     const posts: PostDbType[] = await postCollection
         .find(filter)
-        .sort(query.sortBy, query.sortDirection)
-        .skip((query.pageNumber - 1) * query.pageSize)
-        .limit(query.pageSize)
+        .sort(params.sortBy, params.sortDirection)
+        .skip((params.pageNumber - 1) * params.pageSize)
+        .limit(params.pageSize)
         .toArray() as any[] /*SomePostType[]*/
     return {
-        pageCount: Math.ceil(totalCount / params.pageSize),
+        pagesCount: Math.ceil(totalCount / params.pageSize),
         page: params.pageNumber,
         pageSize: params.pageSize,
         totalCount: totalCount,

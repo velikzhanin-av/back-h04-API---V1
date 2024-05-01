@@ -1,15 +1,21 @@
 import {BlogDbType, PostDbType} from "../../db/dbTypes";
-import {getTotalCount, helper, mapToOutputBlogs} from "../blogs/blogsMongoQueryRepository";
+import {
+    getTotalCount,
+    getTotalCountPosts,
+    helper,
+    mapToOutputBlogs,
+    searchNameTerm
+} from "../blogs/blogsMongoQueryRepository";
 import {mapToOutputPosts} from "./postsMongoRepository";
 import {blogCollection, postCollection} from "../../db/mongoDb";
 
 export const findAllPosts = async (query: any) => {
     const params: any = helper(query)
-    const filter: any = {}
+    const filter = searchNameTerm(params.searchNameTerm)
     let posts: PostDbType[] = await getPostsFromBD(params, filter)
-    const totalCount: number = await getTotalCount(filter)
+    const totalCount: number = await getTotalCountPosts(filter)
     return {
-        pageCount: Math.ceil(totalCount / params.pageSize),
+        pagesCount: Math.ceil(totalCount / params.pageSize),
         page: params.pageNumber,
         pageSize: params.pageSize,
         totalCount: totalCount,
@@ -20,9 +26,11 @@ export const findAllPosts = async (query: any) => {
 }
 
 const getPostsFromBD = async (params: any, filter: any) => {
+    console.log(`${params.sortBy} ${params.sortDirection}`)
     return await postCollection
         .find(filter)
-        .skip(params.pageNumber)
+        .sort(params.sortBy, params.sortDirection)
+        .skip((params.pageNumber - 1) * params.pageSize)
         .limit(params.pageSize)
-        .sort(params.sortBy, params.sortDirection).toArray()
+        .toArray() as any[] /*SomePostType[]*/
 }

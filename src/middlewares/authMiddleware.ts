@@ -3,7 +3,6 @@ import {Request, Response, NextFunction} from "express"
 export const ADMIN_AUTH = 'admin:qwerty' // get from SETTINGS
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
     const auth = req.headers['authorization'] as string // 'Basic xxxx'
-    console.log(auth)
     if (!auth) {
         res.sendStatus(401)
         return

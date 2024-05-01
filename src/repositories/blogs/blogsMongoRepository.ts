@@ -69,5 +69,3 @@ export const createPostForBlogId = async (blogId: string, body: any) => {
     let result = await postCollection.insertOne(newPost)
     return mapToOutputPosts(newPost)
 }
-
-//dsfgdssdgfsdgdsfsdvsdv
